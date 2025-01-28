@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
           <PrivateAssets>all</PrivateAssets>
@@ -29,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CarpoolingApp.DB\CarpoolingApp.DB.csproj" />
+      <ProjectReference Include="..\CarpoolingApp.IL\CarpoolingApp.IL.csproj" />
     </ItemGroup>
 
     <ItemGroup>
