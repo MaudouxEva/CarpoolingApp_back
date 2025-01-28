@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CarpoolingApp.DB\CarpoolingApp.DB.csproj" />
+    </ItemGroup>
+
 </Project>
