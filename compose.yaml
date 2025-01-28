@@ -1,0 +1,12 @@
+﻿services:
+  carpoolingapp.api:
+    image: carpoolingapp.api
+    build:
+      context: .
+      dockerfile: CarpoolingApp.API/Dockerfile
+
+  carpoolingapp.api-1:
+    image: carpoolingapp.api-1
+    build:
+      context: .
+      dockerfile: CarpoolingApp.API/Dockerfile
