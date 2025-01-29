@@ -1,4 +1,4 @@
-﻿namespace CarpoolingApp.TEntityOOLS.GenericRepositories
+﻿namespace CarpoolingApp.TOOLS.GenericRepositories
 {
     // TEntity : class => on dit "que TEntity doit être une classe"
     public interface IRepository<TEntity> where TEntity : class

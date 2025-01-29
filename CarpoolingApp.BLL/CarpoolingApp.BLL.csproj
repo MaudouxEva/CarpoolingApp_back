@@ -6,4 +6,17 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CarpoolingApp.DAL\CarpoolingApp.DAL.csproj" />
+      <ProjectReference Include="..\CarpoolingApp.DB\CarpoolingApp.DB.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Forms\" />
+    </ItemGroup>
+
 </Project>

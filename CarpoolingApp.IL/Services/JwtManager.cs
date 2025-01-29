@@ -7,40 +7,35 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CarpoolingApp.IL.Services;
 
-public class JwtManager : IJwtManager
+public class JwtManager(JwtConfiguration _config, JwtSecurityTokenHandler _tokenHandler) : IJwtManager
 {
-    private readonly JwtConfiguration _config;
-    private readonly JwtSecurityTokenHandler _tokenHandler;
-
-    // constructeur explicite pour l'injection de dépendances
-    public JwtManager(JwtConfiguration config)
-    {
-        _config = config;
-        _tokenHandler = new JwtSecurityTokenHandler();
-    }
+    private SecurityKey SecurityKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Signature));
 
     public string CreateToken(string identifier, string email, string role)
     {
         DateTime now = DateTime.Now;
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Signature));
-        var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, identifier),
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, role)
-        };
-
-        var token = new JwtSecurityToken(
-            issuer: _config.Issuer,
-            audience: _config.Audience,
-            claims: claims,
-            notBefore: now,
-            expires: now.AddSeconds(_config.LifeTime),
-            signingCredentials: creds
+        JwtSecurityToken token = new(
+            _config.Issuer,
+            _config.Audience,
+            CreateClaims(identifier, email, role),
+            now,
+            now.AddSeconds(_config.LifeTime),
+            CreateCredentials()
         );
 
         return _tokenHandler.WriteToken(token);
+    }
+
+    private SigningCredentials CreateCredentials()
+    {
+        return new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
+    }
+
+    private static IEnumerable<Claim> CreateClaims(string identifier, string email, string role)
+    {
+        yield return new Claim(ClaimTypes.NameIdentifier, identifier);
+        yield return new Claim(ClaimTypes.Role, role);
+        yield return new Claim(ClaimTypes.Email, email);
     }
 }
