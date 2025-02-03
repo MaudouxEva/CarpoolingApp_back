@@ -1,5 +1,5 @@
-﻿namespace CarpoolingApp.BLL.DTOs.User;
-
+﻿namespace CarpoolingApp.API.DTOs
+{
 public class UserDTO
 {
     public int Id { get; set; }
@@ -10,3 +10,6 @@ public class UserDTO
 
     public bool IsActive { get; set; }
 }
+    
+}
+

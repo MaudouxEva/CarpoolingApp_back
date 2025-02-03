@@ -1,12 +1,16 @@
-﻿namespace CarpoolingApp.BLL.Interfaces;
-
-public interface IAuthService
+﻿namespace CarpoolingApp.BLL.Interfaces
 {
-    // MODIFICATION ICI: Méthode pour s'inscrire
-    void Register(string email, string password, string firstName, string lastName, bool isAdmin);
+    public interface IAuthService
+    {
+        /// <summary>
+        /// Méthode pour enregistrer un user (Register).
+        /// Renvoie un token JWT si OK.
+        /// </summary>
+        string Register(object dto); // on verra qu'on passera un RegisterDTO
 
-    // MODIFICATION ICI: Méthode pour se logguer
-    string Login(string email, string password);
-
-    // On renvoie un string = le token JWT si c'est OK, sinon on jette une exception
+        /// <summary>
+        /// Méthode pour se logguer. Renvoie un token JWT si OK.
+        /// </summary>
+        string Login(string email, string password);
+    }
 }

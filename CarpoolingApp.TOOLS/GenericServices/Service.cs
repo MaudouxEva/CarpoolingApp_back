@@ -2,37 +2,35 @@
 
 namespace CarpoolingApp.TOOLS.GenericServices
 {
-    /// <summary>
-    /// Classe de base pour factoriser le IRepository<TEntity> dans les services.
-    /// </summary>
-    public abstract class Service<TEntity> : IService<TEntity>
+ public abstract class Service<TEntity> (IRepository<TEntity> _repository) : IService<TEntity>
         where TEntity : class
     {
-        protected readonly IRepository<TEntity> _repository;
-        protected readonly Func<TEntity, bool> _predicate;
-        
-        protected Service(IRepository<TEntity> repository, Func<TEntity, bool> predicate)
-        {
-            _repository = repository;
-            _predicate = predicate;
-        }
-    
+        // On délègue simplement les méthodes au _repository
         public virtual IEnumerable<TEntity> Find()
         {
-            // On délègue simplement au _repository
             return _repository.Find();
+        }
+        
+        public virtual IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
+        {
+            return _repository.Find(predicate);
         }
 
         public virtual TEntity FindById(int id)
         {
             return _repository.FindById(id);
         }
+        
+        public virtual TEntity? FindOne(Func<TEntity, bool> predicate)
+        {
+            return _repository.FindOne(predicate);
+        }
 
-        public virtual TEntity Add(TEntity entity)
+        public virtual TEntity Create(TEntity entity)
         {
             // Ici, on peut faire de la logique avant/après
             // (ex. validations) puis déléguer au repo
-            return _repository.Add(entity);
+            return _repository.Create(entity);
         }
 
         public virtual TEntity Update(TEntity entity)
@@ -40,35 +38,18 @@ namespace CarpoolingApp.TOOLS.GenericServices
             return _repository.Update(entity);
         }
 
-        public virtual IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
-        {
-            return _repository.Find(predicate);
-        }
-
-        public virtual TEntity? FindOne(Func<TEntity, bool> predicate)
-        {
-            return _repository.FindOne(predicate);
-        }
 
         public virtual bool Any(Func<TEntity, bool> predicate)
         {
             return _repository.Any(predicate);
         }
-
-        public virtual int Count()
-        {
-            return _repository.Count();
-        }
-
-        public virtual int Count(Func<TEntity, bool> predicate)
-        {
-            return _repository.Count(predicate);
-        }
+        
+        // public virutal bool Delete(int ind)
     }
 }
 
-/**
- * ServiceBase<TEntity> est une classe abstraite qui sert de base pour factoriser le IRepository<TEntity> dans les services.
- * Comme pour le RepoisotyrBase, on y met le le champ protégé _repository
- * Service<TEntity> est une classe abstraite qui hérite de ServiceBase<TEntity> et implémente IService<TEntity>.
+/* NOTES
+ - ServiceBase<TEntity> est une classe abstraite qui sert de base pour factoriser le IRepository<TEntity> dans les services.
+ - Comme pour le RepoisotyrBase, on y met le le champ protégé _repository
+ - Service<TEntity> est une classe abstraite qui hérite de ServiceBase<TEntity> et implémente IService<TEntity>.
 */

@@ -1,5 +1,6 @@
 ﻿// using CarpoolingApp.API.DTOs;
-using CarpoolingApp.BLL.DTOs.User;
+
+using CarpoolingApp.API.DTOs;
 using CarpoolingApp.BLL.Models;
 
 namespace CarpoolingApp.API.Mappers;
@@ -31,7 +32,7 @@ public static class UserMapper
         };
     }
 
-    public static User ToModel(this UserInsertFormDTO dto)
+    public static User ToModel(this RegisterDTO dto)
     {
         return new User
         {
@@ -39,7 +40,6 @@ public static class UserMapper
             LastName = dto.LastName,
             Email = dto.Email,
             InstitutionId = dto.InstitutionId,
-            IsActive = dto.IsActive
             // On ne gère pas Password dans le BLL model,
             // c'est AuthService/Register qui va hasher et stocker.
         };

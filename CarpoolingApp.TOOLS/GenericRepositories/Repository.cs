@@ -1,15 +1,13 @@
-﻿using CarpoolingApp.DB.Contexts;
-using Microsoft.EntityFrameworkCore;
-using CarpoolingApp.TOOLS.GenericRepositories;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace CarpoolingApp.TEntityOOLS.GenericRepositories
+namespace CarpoolingApp.TOOLS.GenericRepositories
 {
-    public abstract class RepositoryBase(DbContext _context)
+    public abstract class RepositoryBase(DbContext context)
     {
-        protected readonly DbContext _context = _context;
+        protected readonly DbContext _context = context;
     }
     
-    public abstract class Repository<TEntity>(DbContext _context) : RepositoryBase(_context), IRepository<TEntity> where TEntity : class
+    public abstract class Repository<TEntity>(DbContext context) : RepositoryBase(context), IRepository<TEntity> where TEntity : class
     {
         protected DbSet<TEntity> Entities => _context.Set<TEntity>();
 
@@ -33,25 +31,6 @@ namespace CarpoolingApp.TEntityOOLS.GenericRepositories
             // => ça marche, mais pour de gros volumes c'est pas idéal
             return Entities.Where(predicate);
         }
-
-        /// <summary>
-        /// Counts the total number of entities.
-        /// </summary>
-        /// <returns>The total number of entities.</returns>
-        public virtual int Count()
-        {
-            return Entities.Count();
-        }
-
-        /// <summary>
-        /// Counts the number of entities that match the specified predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate to match entities against.</param>
-        /// <returns>The number of entities that match the predicate.</returns>
-        public virtual int Count(Func<TEntity, bool> predicate)
-        {
-            return Entities.AsEnumerable().Count(predicate);
-        }
         
         /// <summary>
         /// Retrieves an entity by its unique identifier.
@@ -73,23 +52,13 @@ namespace CarpoolingApp.TEntityOOLS.GenericRepositories
         {
             return Entities.FirstOrDefault(predicate);
         }
-        
-        /// <summary>
-        /// Checks if any entities match the specified predicate.
-        /// </summary>
-        /// <param name="predicate">The predicate to match entities against.</param>
-        /// <returns>True if any entities match the predicate; otherwise, false.</returns>
-        public virtual bool Any(Func<TEntity, bool> predicate)
-        {
-            return Entities.Any(predicate);
-        }
 
         /// <summary>
         /// Adds a new entity.
         /// </summary>
         /// <param name="entity">The entity to add.</param>
         /// <returns>The added entity.</returns>
-        public virtual TEntity Add(TEntity entity)
+        public virtual TEntity Create(TEntity entity)
         {
             Entities.Add(entity);
             _context.SaveChanges();
@@ -106,6 +75,36 @@ namespace CarpoolingApp.TEntityOOLS.GenericRepositories
             Entities.Update(entity);
             _context.SaveChanges();
             return entity;
+        }
+        
+        /// <summary>
+        /// Checks if any entities match the specified predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate to match entities against.</param>
+        /// <returns>True if any entities match the predicate; otherwise, false.</returns>
+        public virtual bool Any(Func<TEntity, bool> predicate)
+        {
+            return Entities.Any(predicate);
+        }
+        
+        
+        /// <summary>
+        /// Counts the total number of entities.
+        /// </summary>
+        /// <returns>The total number of entities.</returns>
+        public virtual int Count()
+        {
+            return Entities.Count();
+        }
+
+        /// <summary>
+        /// Counts the number of entities that match the specified predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate to match entities against.</param>
+        /// <returns>The number of entities that match the predicate.</returns>
+        public virtual int Count(Func<TEntity, bool> predicate)
+        {
+            return Entities.AsEnumerable().Count(predicate);
         }
 
         // Khun : public virtual TEntity Remove(TEntity entity)
@@ -133,11 +132,12 @@ namespace CarpoolingApp.TEntityOOLS.GenericRepositories
     }
 }
 
-
-/** NOTES
- * La classe générique Repository<TEntity> est conçue pour fournir des opérations CRUD (Create, Read, Update, Delete) sur des entités de type TEntit
- * La classe Repository<TEntity> hérite de RepositoryBase pour réutiliser le contexte de la base de données (DbContext). Cela permet de centraliser la gestion du contexte et de le partager entre différentes classes de repository.
- * Le constructeur de RepositoryBase prend un paramètre DbContext pour initialiser le contexte de la base de données. Cela permet à la classe de repository d'interagir avec la base de données via Entity Framework.
- * La classe Repository<TEntity> implémente l'interface IRepository<TEntity>, qui définit les méthodes CRUD de base. Cela garantit que toutes les classes de repository respectent un contrat commun et fournissent les mêmes opérations de base.
- * Je choisis de procéder par initialisation directe pour initialiser les champs au moment de la déclaration de la classe. Je sais que ne rajouterai rien dans le constructeur, donc pas de constructeur explicite.
+/* NOTES
+ - La classe générique Repository<TEntity> est conçue pour fournir des opérations CRUD (Create, Read, Update, Delete) sur des entités de type TEntit
+ - La classe Repository<TEntity> hérite de RepositoryBase pour réutiliser le contexte de la base de données (DbContext). Cela permet de centraliser la gestion du contexte et de le partager entre différentes classes de repository.
+ - Le constructeur de RepositoryBase prend un paramètre DbContext pour initialiser le contexte de la base de données. Cela permet à la classe de repository d'interagir avec la base de données via Entity Framework.
+ - La classe Repository<TEntity> implémente l'interface IRepository<TEntity>, qui définit les méthodes CRUD de base. Cela garantit que toutes les classes de repository respectent un contrat commun et fournissent les mêmes opérations de base.
+ - Je choisis de procéder par initialisation directe pour initialiser les champs au moment de la déclaration de la classe. Je sais que ne rajouterai rien dans le constructeur, donc pas de constructeur explicite.
 */
+
+
