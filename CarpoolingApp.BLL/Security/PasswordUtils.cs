@@ -18,7 +18,7 @@ namespace CarpoolingApp.BLL.Security
     }
 }
 
-/** NOTES
- * Ce fichier contient des méthodes pour hasher et vérifier des mots de passe.
- * Dans AuthService, j'appelerai PasswordUtils.HashPassword(password) et PasswordUtils.VerifyPassword(user.PasswordHash, password) pour hasher et vérifier les mots de passe.
+/* NOTES
+ - Ce fichier contient des méthodes pour hasher et vérifier des mots de passe.
+ - Dans AuthService, j'appelerai PasswordUtils.HashPassword(password) et PasswordUtils.VerifyPassword(user.PasswordHash, password) pour hasher et vérifier les mots de passe.
 */

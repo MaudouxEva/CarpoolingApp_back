@@ -1,4 +1,4 @@
-﻿namespace CarpoolingApp.IL.Configurations;
+﻿namespace CarpoolingApp.IL.Configurations {
 
 public class JwtConfiguration
 {
@@ -9,4 +9,6 @@ public class JwtConfiguration
     public bool ValidateAudience { get; set; }
     public bool ValidateIssuer { get; set; }
     public bool ValidateLifeTime { get; set; }
+}
+
 }

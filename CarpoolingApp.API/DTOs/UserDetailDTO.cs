@@ -1,5 +1,5 @@
-﻿namespace CarpoolingApp.BLL.DTOs.User;
-
+﻿namespace CarpoolingApp.API.DTOs
+{
 public class UserDetailDTO
 {
     public int Id { get; set; }
@@ -18,4 +18,5 @@ public class UserDetailDTO
 
     // etc. on peut rajouter tes préférences, roles, etc.
     public List<int> RoleIds { get; set; } = new List<int>();
+}
 }

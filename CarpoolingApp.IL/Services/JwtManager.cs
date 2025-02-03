@@ -5,7 +5,7 @@ using CarpoolingApp.BLL.Interfaces;
 using CarpoolingApp.IL.Configurations;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CarpoolingApp.IL.Services;
+namespace CarpoolingApp.IL.Services {
 
 public class JwtManager(JwtConfiguration _config, JwtSecurityTokenHandler _tokenHandler) : IJwtManager
 {
@@ -38,4 +38,4 @@ public class JwtManager(JwtConfiguration _config, JwtSecurityTokenHandler _token
         yield return new Claim(ClaimTypes.Role, role);
         yield return new Claim(ClaimTypes.Email, email);
     }
-}
+}}

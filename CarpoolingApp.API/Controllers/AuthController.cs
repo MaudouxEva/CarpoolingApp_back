@@ -1,6 +1,7 @@
 ﻿using CarpoolingApp.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
+using CarpoolingApp.API.DTOs;
 
 namespace CarpoolingApp.API.Controllers
 {
@@ -10,41 +11,42 @@ namespace CarpoolingApp.API.Controllers
     {
         private readonly IAuthService _authService;
 
-        // MODIFICATION ICI: On injecte IAuthService
+        // On injecte IAuthService
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
-
+        
         // MODIFICATION ICI: Endpoint de REGISTER
         [HttpPost("register")]
-        public IActionResult RegisterUser([FromBody] RegisterDto dto)
+        public IActionResult Register([FromBody] RegisterDTO dto)
         {
             try
             {
-                _authService.Register(dto.Email, dto.Password, dto.FirstName, dto.LastName, dto.IsAdmin);
-                return Ok("User registered successfully");
+                // On appelle AuthService.Register => renvoie un token
+                string token = _authService.Register(dto);
+                // On peut renvoyer le token direct ou un objet plus complet
+                return Ok(new { Token = token });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-        // MODIFICATION ICI: Endpoint de LOGIN
+        
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto dto)
+        public IActionResult Login([FromBody] LoginDTO dto)
         {
             try
             {
                 string token = _authService.Login(dto.Email, dto.Password);
                 return Ok(new { Token = token });
             }
-            catch(InvalidCredentialException ex)
+            catch (InvalidCredentialException ex)
             {
                 return Unauthorized(ex.Message);
             }
-            catch(AuthenticationException ex)
+            catch (AuthenticationException ex)
             {
                 return Unauthorized(ex.Message);
             }
@@ -53,21 +55,5 @@ namespace CarpoolingApp.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    }
-
-    // MODIFICATION ICI: Data Transfer Objects
-    public class RegisterDto
-    {
-        public string Email { get; set; }
-        public string Password { get; set; } 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool IsAdmin { get; set; }
-    }
-
-    public class LoginDto
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
     }
 }
